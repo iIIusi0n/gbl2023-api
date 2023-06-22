@@ -3,6 +3,5 @@ package config
 const (
 	DbType = "sqlite" // sqlite
 
-	SqliteMemory   = false
-	SqliteFilename = "gbl.db"
+	SqliteFilename = "gbl-api.data"
 )

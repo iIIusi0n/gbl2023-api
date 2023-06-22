@@ -4,23 +4,22 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func GetRouter() *gin.Engine {
+func CreateRouter() *gin.Engine {
 	r := gin.Default()
 
 	auth := r.Group("/auth")
 	{
-		auth.GET("/login")
-
-		auth.POST("/register")
+		auth.POST("/login", AuthLogin)
+		auth.POST("/register", AuthRegister)
 	}
 
 	booth := r.Group("/booth")
 	{
-		booth.GET("/")
-		booth.GET("/:bid")
-		booth.GET("/check/:bid/:uid")
+		booth.GET("/", GetBooths)
+		booth.GET("/:bid", GetBooth)
+		booth.GET("/check/:bid/:uid", CheckBooth)
 
-		booth.POST("/make")
+		booth.POST("/make", MakeBooth)
 	}
 
 	problem := r.Group("/problem")
@@ -33,6 +32,11 @@ func GetRouter() *gin.Engine {
 	ranking := r.Group("/ranking")
 	{
 		ranking.GET("/")
+	}
+
+	user := r.Group("/user")
+	{
+		user.GET(":/uid")
 	}
 
 	return r
