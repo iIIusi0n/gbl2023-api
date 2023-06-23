@@ -4,5 +4,5 @@ const (
 	DbType = "sqlite" // sqlite
 
 	SqliteMemory   = false
-	SqliteFilename = "gbl-api.data"
+	SqliteFilename = "gbl-api.db"
 )

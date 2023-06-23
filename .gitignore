@@ -36,3 +36,6 @@ fabric.properties
 *.test
 *.out
 go.work
+*.log
+*.db
+gbl-api
