@@ -7,38 +7,39 @@ import (
 func CreateRouter() *gin.Engine {
 	r := gin.Default()
 
-	apiGroup := r.Group("/api") // "/api" prefix added
-
-	auth := apiGroup.Group("/auth")
+	api := r.Group("/api") // "/api" prefix added
 	{
-		auth.POST("/login", authLogin)
-		auth.POST("/register", authRegister)
-	}
+		auth := api.Group("/auth")
+		{
+			auth.POST("/login", authLogin)
+			auth.POST("/register", authRegister)
+		}
 
-	booth := apiGroup.Group("/booth")
-	{
-		booth.GET("/", getBooths)
-		booth.GET("/:bid", getBooth)
-		booth.GET("/check/:bid/:uid", checkBooth)
+		booth := api.Group("/booth")
+		{
+			booth.GET("/", getBooths)
+			booth.GET("/:bid", getBooth)
+			booth.GET("/check/:bid/:uid", checkBooth)
 
-		booth.POST("/make", makeBooth)
-	}
+			booth.POST("/make", makeBooth)
+		}
 
-	problem := apiGroup.Group("/problem")
-	{
-		problem.GET("/:bid", problemList)
+		problem := api.Group("/problem")
+		{
+			problem.GET("/:bid", problemList)
 
-		problem.POST("/submit/:bid", problemSubmit)
-	}
+			problem.POST("/submit/:bid", problemSubmit)
+		}
 
-	ranking := apiGroup.Group("/ranking")
-	{
-		ranking.GET("/", rankingList)
-	}
+		ranking := api.Group("/ranking")
+		{
+			ranking.GET("/", rankingList)
+		}
 
-	user := apiGroup.Group("/user")
-	{
-		user.GET("/:uid", userInfo)
+		user := api.Group("/user")
+		{
+			user.GET("/:uid", userInfo)
+		}
 	}
 
 	return r
