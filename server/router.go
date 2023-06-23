@@ -7,13 +7,15 @@ import (
 func CreateRouter() *gin.Engine {
 	r := gin.Default()
 
-	auth := r.Group("/auth")
+	apiGroup := r.Group("/api") // "/api" prefix added
+
+	auth := apiGroup.Group("/auth")
 	{
 		auth.POST("/login", authLogin)
 		auth.POST("/register", authRegister)
 	}
 
-	booth := r.Group("/booth")
+	booth := apiGroup.Group("/booth")
 	{
 		booth.GET("/", getBooths)
 		booth.GET("/:bid", getBooth)
@@ -22,19 +24,19 @@ func CreateRouter() *gin.Engine {
 		booth.POST("/make", makeBooth)
 	}
 
-	problem := r.Group("/problem")
+	problem := apiGroup.Group("/problem")
 	{
 		problem.GET("/:bid", problemList)
 
 		problem.POST("/submit/:bid", problemSubmit)
 	}
 
-	ranking := r.Group("/ranking")
+	ranking := apiGroup.Group("/ranking")
 	{
 		ranking.GET("/", rankingList)
 	}
 
-	user := r.Group("/user")
+	user := apiGroup.Group("/user")
 	{
 		user.GET("/:uid", userInfo)
 	}
