@@ -8,6 +8,7 @@ import (
 	"gbl-api/controllers/score"
 	"gbl-api/controllers/user"
 	"gbl-api/data"
+	"gbl-api/server"
 	"github.com/gin-gonic/gin"
 	"log"
 	"os"
@@ -46,6 +47,6 @@ func main() {
 	db.AutoMigrate(&user.User{})
 	db.AutoMigrate(&problem.Problem{})
 
-	r := gin.Default()
+	r := server.CreateRouter()
 	r.Run(config.Hostname + ":" + config.Port)
 }
