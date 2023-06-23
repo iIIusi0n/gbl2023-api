@@ -5,7 +5,7 @@ import (
 )
 
 func IsUserExist(uid string) bool {
-	db := data.GetDatabse()
+	db := data.GetDatabase()
 	var user User
 	db.Where("uid = ?", uid).First(&user)
 	return user.UID != ""

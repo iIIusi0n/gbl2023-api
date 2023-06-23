@@ -9,34 +9,34 @@ func CreateRouter() *gin.Engine {
 
 	auth := r.Group("/auth")
 	{
-		auth.POST("/login", AuthLogin)
-		auth.POST("/register", AuthRegister)
+		auth.POST("/login", authLogin)
+		auth.POST("/register", authRegister)
 	}
 
 	booth := r.Group("/booth")
 	{
-		booth.GET("/", GetBooths)
-		booth.GET("/:bid", GetBooth)
-		booth.GET("/check/:bid/:uid", CheckBooth)
+		booth.GET("/", getBooths)
+		booth.GET("/:bid", getBooth)
+		booth.GET("/check/:bid/:uid", checkBooth)
 
-		booth.POST("/make", MakeBooth)
+		booth.POST("/make", makeBooth)
 	}
 
 	problem := r.Group("/problem")
 	{
-		problem.GET("/:bid")
+		problem.GET("/:bid", problemList)
 
-		problem.POST("/submit/:bid")
+		problem.POST("/submit/:bid", problemSubmit)
 	}
 
 	ranking := r.Group("/ranking")
 	{
-		ranking.GET("/")
+		ranking.GET("/", rankingList)
 	}
 
 	user := r.Group("/user")
 	{
-		user.GET(":/uid")
+		user.GET("/:uid", userInfo)
 	}
 
 	return r

@@ -1,11 +1,15 @@
 package server
 
 import (
+	"gbl-api/controllers/booth"
+	"gbl-api/controllers/score"
 	"gbl-api/controllers/user"
 	"github.com/gin-gonic/gin"
+	"log"
+	"time"
 )
 
-func AuthLogin(c *gin.Context) {
+func authLogin(c *gin.Context) {
 	var u user.User
 	err := c.BindJSON(&u)
 	if err != nil {
@@ -26,7 +30,7 @@ func AuthLogin(c *gin.Context) {
 	}
 }
 
-func AuthRegister(c *gin.Context) {
+func authRegister(c *gin.Context) {
 	var u user.User
 	err := c.BindJSON(&u)
 	if err != nil {
@@ -38,6 +42,7 @@ func AuthRegister(c *gin.Context) {
 
 	err = user.RegisterUser(u)
 	if err != nil {
+		log.Println(err)
 		c.JSON(500, gin.H{
 			"message": "Internal server error",
 		})
@@ -46,5 +51,64 @@ func AuthRegister(c *gin.Context) {
 
 	c.JSON(200, gin.H{
 		"message": "Register success",
+	})
+}
+
+type historyType struct {
+	Name  string `json:"name"`
+	Score int    `json:"score"`
+}
+
+func userInfo(c *gin.Context) {
+	uid := c.Param("uid")
+	totalScore, err := score.GetTotalScore(uid)
+	if err != nil {
+		log.Println(err)
+		c.JSON(500, gin.H{
+			"message": "Internal server error",
+		})
+		return
+	}
+
+	rank, err := score.GetRank(uid)
+	if err != nil {
+		log.Println(err)
+		c.JSON(500, gin.H{
+			"message": "Internal server error",
+		})
+		return
+	}
+
+	boothScores, err := score.GetUserScores(uid)
+	if err != nil {
+		log.Println(err)
+		c.JSON(500, gin.H{
+			"message": "Internal server error",
+		})
+		return
+	}
+
+	var history []historyType
+	for k, v := range boothScores {
+		b, err := booth.GetBooth(k)
+		if err != nil {
+			log.Println(err)
+			c.JSON(500, gin.H{
+				"message": "Internal server error",
+			})
+			return
+		}
+
+		history = append(history, historyType{
+			Name:  b.Name,
+			Score: v,
+		})
+	}
+
+	c.JSON(200, gin.H{
+		"total_score": totalScore,
+		"now_rank":    rank,
+		"history":     history,
+		"time":        time.Now().Format("2006-01-02 15:04:05"),
 	})
 }

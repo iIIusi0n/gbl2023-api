@@ -10,14 +10,14 @@ import (
 
 var db *gorm.DB
 
-func GetDatabse() *gorm.DB {
+func GetDatabase() *gorm.DB {
 	if db != nil {
 		return db
 	}
 
 	switch config.DbType {
 	case "sqlite":
-		db = GetSqliteDatabase()
+		db = getSqliteDatabase()
 	default:
 		panic("Unknown database type")
 	}
