@@ -13,6 +13,20 @@ func GetBoothProblems(bid string) ([]Problem, error) {
 	return problems, err
 }
 
+func MakeBoothProblems(bid string, problems []Problem) error {
+	db := data.GetDatabase()
+
+	for _, p := range problems {
+		p.BID = bid
+		err := db.Create(&p).Error
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
 func CheckAnswer(pid, answer string) int {
 	var problem Problem
 	db := data.GetDatabase()

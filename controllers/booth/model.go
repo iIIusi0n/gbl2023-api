@@ -11,3 +11,8 @@ type Booth struct {
 	ThumbnailURL string         `json:"thumbnail_url"`
 	ProblemOrder pq.StringArray `gorm:"type:text[]" json:"problem_order"`
 }
+
+type BoothPassword struct {
+	BID      string `json:"bid"`
+	Password string `json:"password"`
+}

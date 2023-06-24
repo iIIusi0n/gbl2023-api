@@ -19,3 +19,17 @@ func IsUserExist(uid string) bool {
 		return false
 	}
 }
+
+func GetUser(uid string) User {
+	db := data.GetDatabase()
+	var user User
+	err := db.Where("uid = ?", uid).First(&user).Error
+	if err == gorm.ErrRecordNotFound {
+		return User{}
+	} else if err == nil {
+		return user
+	} else {
+		log.Println(err)
+		return User{}
+	}
+}

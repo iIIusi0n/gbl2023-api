@@ -42,7 +42,9 @@ func getBooths(c *gin.Context) {
 		})
 		return
 	}
-	c.JSON(200, booths)
+	c.JSON(200, gin.H{
+		"boothlist": booths,
+	})
 }
 
 func getBooth(c *gin.Context) {

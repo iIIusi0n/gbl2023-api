@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"gbl-api/config"
 	"gbl-api/controllers/booth"
+	"gbl-api/controllers/notification"
 	"gbl-api/controllers/problem"
 	"gbl-api/controllers/score"
 	"gbl-api/controllers/user"
@@ -43,9 +44,11 @@ func main() {
 
 	db := data.GetDatabase()
 	db.AutoMigrate(&booth.Booth{})
+	db.AutoMigrate(&booth.BoothPassword{})
 	db.AutoMigrate(&score.Participation{})
 	db.AutoMigrate(&user.User{})
 	db.AutoMigrate(&problem.Problem{})
+	db.AutoMigrate(&notification.Notification{})
 
 	r := server.CreateRouter()
 	r.Run(config.Hostname + ":" + config.Port)

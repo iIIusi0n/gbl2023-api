@@ -20,8 +20,10 @@ func authLogin(c *gin.Context) {
 	}
 
 	if user.IsUserExist(u.UID) {
+		u = user.GetUser(u.UID)
 		c.JSON(200, gin.H{
 			"message": "Login success",
+			"type":    u.Type,
 		})
 	} else {
 		c.JSON(404, gin.H{
@@ -111,4 +113,32 @@ func userInfo(c *gin.Context) {
 		"history":     history,
 		"time":        time.Now().Format("2006-01-02 15:04:05"),
 	})
+}
+
+func authBoothAdmin(c *gin.Context) {
+	var boothPw booth.BoothPassword
+	err := c.BindJSON(&boothPw)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": "Invalid request",
+		})
+		return
+	}
+
+	b, err := booth.GetBoothByPassword(boothPw.Password)
+	if err != nil {
+		c.JSON(500, gin.H{
+			"message": "Internal server error",
+		})
+	} else if b.BID == "" {
+		c.JSON(200, gin.H{
+			"is_created": false,
+			"bid":        "",
+		})
+	} else {
+		c.JSON(200, gin.H{
+			"is_created": true,
+			"bid":        b.BID,
+		})
+	}
 }

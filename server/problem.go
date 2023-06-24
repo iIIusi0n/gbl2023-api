@@ -70,3 +70,31 @@ func problemSubmit(c *gin.Context) {
 		"answers": scores,
 	})
 }
+
+type problemMakeRequest struct {
+	Problems []problem.Problem `json:"problems"`
+}
+
+func problemMake(c *gin.Context) {
+	bid := c.Param("bid")
+	var req problemMakeRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(400, gin.H{
+			"message": "Bad Request",
+		})
+		return
+	}
+
+	err := problem.MakeBoothProblems(bid, req.Problems)
+	if err != nil {
+		log.Println(err)
+		c.JSON(500, gin.H{
+			"message": "Internal Server Error",
+		})
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"status": "ok",
+	})
+}

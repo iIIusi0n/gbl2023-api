@@ -13,6 +13,7 @@ func CreateRouter() *gin.Engine {
 		{
 			auth.POST("/login", authLogin)
 			auth.POST("/register", authRegister)
+			auth.POST("/boothadmin", authBoothAdmin)
 		}
 
 		booth := api.Group("/booth")
@@ -28,6 +29,7 @@ func CreateRouter() *gin.Engine {
 		{
 			problem.GET("/:bid", problemList)
 
+			problem.POST("/make/:bid", problemMake)
 			problem.POST("/submit/:bid", problemSubmit)
 		}
 
@@ -39,6 +41,13 @@ func CreateRouter() *gin.Engine {
 		user := api.Group("/user")
 		{
 			user.GET("/:uid", userInfo)
+		}
+
+		notification := api.Group("/notification")
+		{
+			notification.GET("/", notificationList)
+
+			notification.POST("/make", notificationMake)
 		}
 	}
 
