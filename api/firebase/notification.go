@@ -3,7 +3,6 @@ package firebase
 import (
 	"context"
 	"firebase.google.com/go/messaging"
-	"fmt"
 	fbConfig "gbl-api/api/firebase/config"
 	"gbl-api/config"
 	"log"
@@ -15,7 +14,8 @@ func SendNotification(title, body string) {
 	ctx := context.Background()
 	client, err := app.Messaging(ctx)
 	if err != nil {
-		log.Fatalf("error getting Messaging client: %v\n", err)
+		log.Printf("error getting Messaging client: %v\n", err)
+		return
 	}
 
 	message := &messaging.Message{
@@ -28,7 +28,8 @@ func SendNotification(title, body string) {
 
 	response, err := client.Send(ctx, message)
 	if err != nil {
-		log.Fatalln(err)
+		log.Println(err)
+		return
 	}
-	fmt.Println("Successfully sent message:", response)
+	log.Println("Successfully sent message:", response)
 }
