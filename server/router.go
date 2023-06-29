@@ -9,6 +9,8 @@ func CreateRouter() *gin.Engine {
 
 	api := r.Group("/api") // "/api" prefix added
 	{
+		api.POST("/upload", uploadFile)
+
 		auth := api.Group("/auth")
 		{
 			auth.POST("/login", authLogin)
