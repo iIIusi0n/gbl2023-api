@@ -14,7 +14,7 @@ func generateRandomString(length int) string {
 
 func generateRandomFilePath(ext string) string {
 	rnd := generateRandomString(32)
-	return ".\\upload\\" + rnd + "." + ext
+	return "./upload/" + rnd + "." + ext
 }
 
 func uploadFile(c *gin.Context) {

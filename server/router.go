@@ -7,6 +7,8 @@ import (
 func CreateRouter() *gin.Engine {
 	r := gin.Default()
 
+	r.Static("/getfile", "./upload")
+
 	api := r.Group("/api") // "/api" prefix added
 	{
 		api.POST("/upload", uploadFile)
