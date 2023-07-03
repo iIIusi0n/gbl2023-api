@@ -8,8 +8,8 @@ import (
 )
 
 func makeBooth(c *gin.Context) {
-	var booths []booth.Booth
-	err := c.BindJSON(&booths)
+	var b booth.Booth
+	err := c.BindJSON(&b)
 	if err != nil {
 		c.JSON(400, gin.H{
 			"message": "Invalid request",
@@ -17,15 +17,13 @@ func makeBooth(c *gin.Context) {
 		return
 	}
 
-	for _, b := range booths {
-		err = booth.MakeBooth(b)
-		if err != nil {
-			log.Println(err)
-			c.JSON(500, gin.H{
-				"message": "Internal server error",
-			})
-			return
-		}
+	err = booth.MakeBooth(b)
+	if err != nil {
+		log.Println(err)
+		c.JSON(500, gin.H{
+			"message": "Internal server error",
+		})
+		return
 	}
 
 	c.JSON(200, gin.H{
