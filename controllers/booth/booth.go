@@ -3,6 +3,7 @@ package booth
 import (
 	"gbl-api/data"
 	"gorm.io/gorm"
+	"math/rand"
 )
 
 func GetBooths() ([]Booth, error) {
@@ -19,20 +20,47 @@ func GetBooth(bid string) (Booth, error) {
 	return booth, err
 }
 
-func GetBoothByPassword(password string) (Booth, error) {
+func GetBoothIdByPassword(password string) (string, error) {
 	db := data.GetDatabase()
 	var boothPw BoothPassword
 	err := db.Where("password = ?", password).First(&boothPw).Error
 	if err == gorm.ErrRecordNotFound {
-		return Booth{}, nil
+		return "", nil
 	} else if err != nil {
-		return Booth{}, err
+		return "", err
 	} else {
-		return GetBooth(boothPw.BID)
+		return boothPw.BID, nil
 	}
 }
 
 func DeleteBooth(bid string) error {
 	db := data.GetDatabase()
 	return db.Delete(&Booth{}, "bid = ?", bid).Error
+}
+
+func generateRandomString(n int) string {
+	charSet := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+	b := make([]byte, n)
+	for i := range b {
+		b[i] = charSet[rand.Intn(len(charSet))]
+	}
+
+	return string(b)
+}
+
+func generateRandomBID() string {
+	return generateRandomString(64)
+}
+
+func AddPassword(password string) error {
+	db := data.GetDatabase()
+	return db.Create(&BoothPassword{
+		Password: password,
+		BID:      generateRandomBID(),
+	}).Error
+}
+
+func DeletePasswordByBID(bid string) error {
+	db := data.GetDatabase()
+	return db.Delete(&BoothPassword{}, "bid = ?", bid).Error
 }

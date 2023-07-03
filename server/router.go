@@ -13,6 +13,9 @@ func CreateRouter() *gin.Engine {
 	{
 		api.POST("/upload", uploadFile)
 
+		api.DELETE("/boothuser/:bid", deleteBoothUser)
+		api.POST("/makeboothuser", makeBoothUser)
+
 		auth := api.Group("/auth")
 		{
 			auth.POST("/login", authLogin)

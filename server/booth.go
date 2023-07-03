@@ -97,3 +97,45 @@ func deleteBooth(c *gin.Context) {
 		"status": "ok",
 	})
 }
+
+func deleteBoothUser(c *gin.Context) {
+	bid := c.Param("bid")
+
+	err1 := booth.DeleteBooth(bid)
+	err2 := booth.DeletePasswordByBID(bid)
+	if err1 != nil || err2 != nil {
+		log.Println(err1, err2)
+		c.JSON(500, gin.H{
+			"message": "Internal server error",
+		})
+		return
+	}
+}
+
+func makeBoothUser(c *gin.Context) {
+	type Request struct {
+		Password string `json:"password"`
+	}
+
+	var req Request
+	err := c.BindJSON(&req)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": "Invalid request",
+		})
+		return
+	}
+
+	err = booth.AddPassword(req.Password)
+	if err != nil {
+		log.Println(err)
+		c.JSON(500, gin.H{
+			"message": "Internal server error",
+		})
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"status": "ok",
+	})
+}

@@ -5,6 +5,7 @@ import (
 	"gbl-api/controllers/score"
 	"gbl-api/controllers/user"
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 	"log"
 	"time"
 )
@@ -125,20 +126,35 @@ func authBoothAdmin(c *gin.Context) {
 		return
 	}
 
-	b, err := booth.GetBoothByPassword(boothPw.Password)
+	bid, err := booth.GetBoothIdByPassword(boothPw.Password)
 	if err != nil {
+		log.Println(err)
 		c.JSON(500, gin.H{
 			"message": "Internal server error",
 		})
-	} else if b.BID == "" {
-		c.JSON(200, gin.H{
-			"is_created": false,
-			"bid":        "",
+	} else if bid == "" {
+		c.JSON(404, gin.H{
+			"message": "Booth not found",
 		})
 	} else {
-		c.JSON(200, gin.H{
-			"is_created": true,
-			"bid":        b.BID,
-		})
+		_, err := booth.GetBooth(bid)
+		if err != nil {
+			if err == gorm.ErrRecordNotFound {
+				c.JSON(200, gin.H{
+					"bid":        bid,
+					"is_created": false,
+				})
+			} else {
+				log.Println(err)
+				c.JSON(500, gin.H{
+					"message": "Internal server error",
+				})
+			}
+		} else {
+			c.JSON(200, gin.H{
+				"bid":        bid,
+				"is_created": true,
+			})
+		}
 	}
 }
