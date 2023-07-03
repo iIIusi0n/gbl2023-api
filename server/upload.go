@@ -20,7 +20,9 @@ func generateRandomFilePath(ext string) string {
 func uploadFile(c *gin.Context) {
 	f, _ := c.FormFile("file")
 	if f.Size > 1024*1024*50 {
-		c.JSON(400, gin.H{"error": "file size too big"})
+		c.JSON(400, gin.H{
+			"error": "file size too big",
+		})
 		return
 	}
 

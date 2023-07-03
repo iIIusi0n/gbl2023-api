@@ -82,3 +82,20 @@ func checkBooth(c *gin.Context) {
 		})
 	}
 }
+
+func deleteBooth(c *gin.Context) {
+	bid := c.Param("bid")
+
+	err := booth.DeleteBooth(bid)
+	if err != nil {
+		log.Println(err)
+		c.JSON(500, gin.H{
+			"message": "Internal server error",
+		})
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"status": "ok",
+	})
+}

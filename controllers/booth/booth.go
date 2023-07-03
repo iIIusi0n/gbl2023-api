@@ -31,3 +31,8 @@ func GetBoothByPassword(password string) (Booth, error) {
 		return GetBooth(boothPw.BID)
 	}
 }
+
+func DeleteBooth(bid string) error {
+	db := data.GetDatabase()
+	return db.Delete(&Booth{}, "bid = ?", bid).Error
+}
