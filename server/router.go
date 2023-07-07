@@ -11,34 +11,34 @@ func CreateRouter() *gin.Engine {
 
 	api := r.Group("/api") // "/api" prefix added
 	{
-		api.POST("/upload", uploadFile)
+		api.POST("/upload/", uploadFile)
 
-		api.DELETE("/boothuser/:bid", deleteBoothUser)
-		api.POST("/makeboothuser", makeBoothUser)
+		api.DELETE("/boothuser/:bid/", deleteBoothUser)
+		api.POST("/makeboothuser/", makeBoothUser)
 
 		auth := api.Group("/auth")
 		{
-			auth.POST("/login", authLogin)
-			auth.POST("/register", authRegister)
-			auth.POST("/boothadmin", authBoothAdmin)
+			auth.POST("/login/", authLogin)
+			auth.POST("/register/", authRegister)
+			auth.POST("/boothadmin/", authBoothAdmin)
 		}
 
 		booth := api.Group("/booth")
 		{
 			booth.GET("/", getBooths)
-			booth.GET("/:bid", getBooth)
-			booth.DELETE("/:bid", deleteBooth)
-			booth.GET("/check/:bid/:uid", checkBooth)
+			booth.GET("/:bid/", getBooth)
+			booth.DELETE("/:bid/", deleteBooth)
+			booth.GET("/check/:bid/:uid/", checkBooth)
 
-			booth.POST("/make", makeBooth)
+			booth.POST("/make/", makeBooth)
 		}
 
 		problem := api.Group("/problem")
 		{
-			problem.GET("/:bid", problemList)
+			problem.GET("/:bid/", problemList)
 
-			problem.POST("/make/:bid", problemMake)
-			problem.POST("/submit/:bid", problemSubmit)
+			problem.POST("/make/:bid/", problemMake)
+			problem.POST("/submit/:bid/", problemSubmit)
 		}
 
 		ranking := api.Group("/ranking")
@@ -48,14 +48,14 @@ func CreateRouter() *gin.Engine {
 
 		user := api.Group("/user")
 		{
-			user.GET("/:uid", userInfo)
+			user.GET("/:uid/", userInfo)
 		}
 
 		notification := api.Group("/notification")
 		{
 			notification.GET("/", notificationList)
 
-			notification.POST("/make", notificationMake)
+			notification.POST("/make/", notificationMake)
 		}
 	}
 

@@ -1,13 +1,14 @@
 package server
 
 import (
+	"fmt"
 	"gbl-api/controllers/booth"
 	"gbl-api/controllers/score"
 	"gbl-api/controllers/user"
-	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 	"log"
 	"time"
+
+	"github.com/gin-gonic/gin"
 )
 
 func authLogin(c *gin.Context) {
@@ -139,17 +140,18 @@ func authBoothAdmin(c *gin.Context) {
 	} else {
 		_, err := booth.GetBooth(bid)
 		if err != nil {
-			if err == gorm.ErrRecordNotFound {
-				c.JSON(200, gin.H{
-					"bid":        bid,
-					"is_created": false,
-				})
-			} else {
-				log.Println(err)
-				c.JSON(500, gin.H{
-					"message": "Internal server error",
-				})
-			}
+			// if err == gorm.ErrRecordNotFound {
+			fmt.Println(err)
+			c.JSON(200, gin.H{
+				"bid":        bid,
+				"is_created": false,
+			})
+			// } else {
+			// 	log.Println(err)
+			// 	c.JSON(500, gin.H{
+			// 		"message": "Internal server error",
+			// 	})
+			// }
 		} else {
 			c.JSON(200, gin.H{
 				"bid":        bid,
