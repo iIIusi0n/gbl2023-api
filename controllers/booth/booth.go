@@ -2,8 +2,9 @@ package booth
 
 import (
 	"gbl-api/data"
-	"gorm.io/gorm"
 	"math/rand"
+
+	"gorm.io/gorm"
 )
 
 func GetBooths() ([]Booth, error) {
@@ -16,7 +17,7 @@ func GetBooths() ([]Booth, error) {
 func GetBooth(bid string) (Booth, error) {
 	db := data.GetDatabase()
 	var booth Booth
-	err := db.Where("bid = ?", bid).First(&booth).Error
+	err := db.Where("b_id = ?", bid).First(&booth).Error
 	return booth, err
 }
 

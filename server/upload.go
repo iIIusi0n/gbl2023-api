@@ -3,6 +3,7 @@ package server
 import (
 	"crypto/rand"
 	"encoding/base64"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -27,9 +28,11 @@ func uploadFile(c *gin.Context) {
 	}
 
 	ext := f.Filename[len(f.Filename)-3:]
-	c.SaveUploadedFile(f, generateRandomFilePath(ext))
+	filename := generateRandomFilePath(ext)
+
+	c.SaveUploadedFile(f, filename)
 	c.JSON(200, gin.H{
 		"success": true,
-		"file":    f.Filename,
+		"file":    filename,
 	})
 }
