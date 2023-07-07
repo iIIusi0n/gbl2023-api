@@ -1,10 +1,12 @@
 package server
 
 import (
+	"fmt"
 	"gbl-api/controllers/booth"
 	"gbl-api/controllers/score"
-	"github.com/gin-gonic/gin"
 	"log"
+
+	"github.com/gin-gonic/gin"
 )
 
 func makeBooth(c *gin.Context) {
@@ -119,6 +121,7 @@ func makeBoothUser(c *gin.Context) {
 
 	var req Request
 	err := c.BindJSON(&req)
+	fmt.Println(err)
 	if err != nil {
 		c.JSON(400, gin.H{
 			"message": "Invalid request",
