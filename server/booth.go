@@ -2,7 +2,6 @@ package server
 
 import (
 	"gbl-api/controllers/booth"
-	"gbl-api/controllers/score"
 	"github.com/gin-gonic/gin"
 	"log"
 )
@@ -61,7 +60,7 @@ func checkBooth(c *gin.Context) {
 	bid := c.Param("bid")
 	uid := c.Param("uid")
 
-	p, err := score.IsUserParticipated(bid, uid)
+	p, err := booth.IsUidInBooth(bid, uid)
 	if err != nil {
 		log.Println(err)
 		c.JSON(500, gin.H{
@@ -127,6 +126,35 @@ func makeBoothUser(c *gin.Context) {
 	}
 
 	err = booth.AddPassword(req.Password)
+	if err != nil {
+		log.Println(err)
+		c.JSON(500, gin.H{
+			"message": "Internal server error",
+		})
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"status": "ok",
+	})
+}
+
+type addUserReq struct {
+	UID string `json:"uid"`
+	BID string `json:"bid"`
+}
+
+func addUser(c *gin.Context) {
+	var req addUserReq
+	err := c.BindJSON(&req)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": "Invalid request",
+		})
+		return
+	}
+
+	err = booth.AddUidToBooth(req.BID, req.UID)
 	if err != nil {
 		log.Println(err)
 		c.JSON(500, gin.H{

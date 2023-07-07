@@ -31,6 +31,8 @@ func CreateRouter() *gin.Engine {
 			booth.GET("/check/:bid/:uid", checkBooth)
 
 			booth.POST("/make", makeBooth)
+
+			booth.POST("/adduser", addUser)
 		}
 
 		problem := api.Group("/problem")

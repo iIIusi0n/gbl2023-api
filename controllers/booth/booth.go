@@ -64,3 +64,29 @@ func DeletePasswordByBID(bid string) error {
 	db := data.GetDatabase()
 	return db.Delete(&BoothPassword{}, "bid = ?", bid).Error
 }
+
+func AddUidToBooth(bid string, uid string) error {
+	db := data.GetDatabase()
+	var booth Booth
+	err := db.Where("bid = ?", bid).First(&booth).Error
+	if err != nil {
+		return err
+	}
+	booth.UIDs = append(booth.UIDs, uid)
+	return db.Save(&booth).Error
+}
+
+func IsUidInBooth(bid string, uid string) (bool, error) {
+	db := data.GetDatabase()
+	var booth Booth
+	err := db.Where("bid = ?", bid).First(&booth).Error
+	if err != nil {
+		return false, err
+	}
+	for _, u := range booth.UIDs {
+		if u == uid {
+			return true, nil
+		}
+	}
+	return false, nil
+}

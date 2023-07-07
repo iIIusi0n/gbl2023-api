@@ -10,6 +10,7 @@ type Booth struct {
 	VideoURL     string         `json:"video_url"`
 	ThumbnailURL string         `json:"thumbnail_url"`
 	ProblemOrder pq.StringArray `gorm:"type:text[]" json:"problem_order"`
+	UIDs         []string       `json:"uids"`
 }
 
 type BoothPassword struct {
