@@ -48,7 +48,7 @@ func MakeBoothProblems(bid string, problems []Problem) error {
 		}
 
 		b.ProblemOrder = append(b.ProblemOrder, p.PID)
-		err = db.Save(&b).Error
+		err = db.Save(&b).Where("bid = ?", bid).Error
 		if err != nil {
 			return err
 		}
