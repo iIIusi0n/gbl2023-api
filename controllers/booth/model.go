@@ -14,6 +14,6 @@ type Booth struct {
 }
 
 type BoothPassword struct {
-	BID      string `json:"bid"`
+	BID      string `gorm:"column:bid" json:"bid"`
 	Password string `json:"password"`
 }
