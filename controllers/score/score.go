@@ -1,14 +1,19 @@
 package score
 
 import (
+	"time"
+
 	"gbl-api/data"
 	"gorm.io/gorm"
-	"time"
 )
 
 var userScores map[string]int
 var userRank map[string]int
 var lastScoresUpdate time.Time
+
+func UpdateLastScoreChanged() {
+	lastScoresUpdate = time.Now()
+}
 
 func IsUserParticipated(bid, uid string) (bool, error) {
 	db := data.GetDatabase()

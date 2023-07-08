@@ -2,6 +2,10 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"os"
+	"time"
+
 	"gbl-api/config"
 	"gbl-api/controllers/booth"
 	"gbl-api/controllers/notification"
@@ -11,9 +15,6 @@ import (
 	"gbl-api/data"
 	"gbl-api/server"
 	"github.com/gin-gonic/gin"
-	"log"
-	"os"
-	"time"
 )
 
 func main() {
@@ -41,6 +42,8 @@ func main() {
 
 	gin.DefaultErrorWriter = errorLog
 	log.SetOutput(errorLog)
+
+	score.UpdateLastScoreChanged()
 
 	db := data.GetDatabase()
 	db.AutoMigrate(&booth.Booth{})
