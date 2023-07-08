@@ -6,8 +6,8 @@ import (
 )
 
 type Problem struct {
-	BID         string `json:"bid"`
-	PID         string `json:"pid"`
+	BID         string `gorm:"column:bid" json:"bid"`
+	PID         string `gorm:"column:pid" json:"pid"`
 	PdfURL      string `json:"pdf_url"`
 	ProblemType string `json:"problem_type"`
 	Question    string `json:"question"`
