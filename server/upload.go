@@ -27,9 +27,10 @@ func uploadFile(c *gin.Context) {
 	}
 
 	ext := f.Filename[len(f.Filename)-3:]
-	c.SaveUploadedFile(f, generateRandomFilePath(ext))
+	generatedFileName := generateRandomFilePath(ext)
+	c.SaveUploadedFile(f, generatedFileName)
 	c.JSON(200, gin.H{
 		"success": true,
-		"file":    f.Filename,
+		"file":    generatedFileName,
 	})
 }
