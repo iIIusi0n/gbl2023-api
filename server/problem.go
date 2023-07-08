@@ -25,8 +25,8 @@ func problemList(c *gin.Context) {
 }
 
 type problemSubmitRequest struct {
-	UID           string   `json:"uid"`
-	submit_answer []string `json:"submit_answer"`
+	UID          string   `json:"uid"`
+	SubmitAnswer []string `json:"submit_answer"`
 }
 
 func problemSubmit(c *gin.Context) {
@@ -52,7 +52,7 @@ func problemSubmit(c *gin.Context) {
 	var totalScore int
 	var scores []int
 	for i, p := range b.ProblemOrder {
-		s := problem.CheckAnswer(p, req.submit_answer[i])
+		s := problem.CheckAnswer(p, req.SubmitAnswer[i])
 		totalScore += s
 		scores = append(scores, s)
 		err := score.AddScore(bid, uid, p, s)
