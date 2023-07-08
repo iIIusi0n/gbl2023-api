@@ -5,6 +5,7 @@ import "github.com/lib/pq"
 type Booth struct {
 	BID          string         `gorm:"column:bid" json:"bid"`
 	Name         string         `json:"name"`
+	Description  string         `json:"description"`
 	Part         string         `json:"part"`
 	Complexity   int            `json:"complexity"`
 	VideoURL     string         `json:"video_url"`

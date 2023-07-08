@@ -1,9 +1,10 @@
 package server
 
 import (
+	"log"
+
 	"gbl-api/controllers/booth"
 	"github.com/gin-gonic/gin"
-	"log"
 )
 
 func makeBooth(c *gin.Context) {
