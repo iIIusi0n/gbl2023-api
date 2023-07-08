@@ -1,7 +1,9 @@
 package problem
 
 import (
+	"gbl-api/controllers/booth"
 	"gbl-api/data"
+	"math/rand"
 )
 
 func GetBoothProblems(bid string) ([]Problem, error) {
@@ -13,6 +15,16 @@ func GetBoothProblems(bid string) ([]Problem, error) {
 	return problems, err
 }
 
+func generateRandomString(n int) string {
+	charSet := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+	b := make([]byte, n)
+	for i := range b {
+		b[i] = charSet[rand.Intn(len(charSet))]
+	}
+
+	return string(b)
+}
+
 func MakeBoothProblems(bid string, problems []Problem) error {
 	db := data.GetDatabase()
 
@@ -22,8 +34,21 @@ func MakeBoothProblems(bid string, problems []Problem) error {
 	}
 
 	for _, p := range problems {
+		p.PID = generateRandomString(64)
 		p.BID = bid
 		err := db.Create(&p).Error
+		if err != nil {
+			return err
+		}
+
+		var b booth.Booth
+		err = db.Where("bid = ?", bid).First(&b).Error
+		if err != nil {
+			return err
+		}
+
+		b.ProblemOrder = append(b.ProblemOrder, p.PID)
+		err = db.Save(&b).Error
 		if err != nil {
 			return err
 		}
