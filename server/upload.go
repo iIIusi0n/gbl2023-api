@@ -14,7 +14,7 @@ func generateRandomString(length int) string {
 
 func generateRandomFilePath(ext string) string {
 	rnd := generateRandomString(32)
-	return "./upload/" + rnd + "." + ext
+	return rnd + "." + ext
 }
 
 func uploadFile(c *gin.Context) {
@@ -28,7 +28,7 @@ func uploadFile(c *gin.Context) {
 
 	ext := f.Filename[len(f.Filename)-3:]
 	generatedFileName := generateRandomFilePath(ext)
-	c.SaveUploadedFile(f, generatedFileName)
+	c.SaveUploadedFile(f, "./upload/" + generatedFileName)
 	c.JSON(200, gin.H{
 		"success": true,
 		"file":    generatedFileName,
