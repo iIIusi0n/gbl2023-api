@@ -57,11 +57,22 @@ func getBooth(c *gin.Context) {
 	c.JSON(200, b)
 }
 
-func checkBooth(c *gin.Context) {
-	bid := c.Param("bid")
-	uid := c.Param("uid")
+type checkBoothRequest struct {
+	BID string `json:"bid"`
+	UID string `json:"uid"`
+}
 
-	p, err := booth.IsUidInBooth(bid, uid)
+func checkBooth(c *gin.Context) {
+	var req checkBoothRequest
+	err := c.BindJSON(&req)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": "Invalid request",
+		})
+		return
+	}
+
+	p, err := booth.IsUidInBooth(req.BID, req.UID)
 	if err != nil {
 		log.Println(err)
 		c.JSON(500, gin.H{

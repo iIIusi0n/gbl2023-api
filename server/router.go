@@ -9,7 +9,7 @@ func CreateRouter() *gin.Engine {
 
 	r.Static("/getfile/", "./upload")
 
-	api := r.Group("/api") // "/api" prefix added
+	api := r.Group("/api")
 	{
 		api.POST("/upload/", uploadFile)
 
@@ -28,7 +28,7 @@ func CreateRouter() *gin.Engine {
 			booth.GET("/", getBooths)
 			booth.GET("/:bid/", getBooth)
 			booth.DELETE("/:bid/", deleteBooth)
-			booth.GET("/check/:bid/:uid/", checkBooth)
+			booth.POST("/check/", checkBooth)
 
 			booth.POST("/make/", makeBooth)
 
