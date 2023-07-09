@@ -1,9 +1,10 @@
 package booth
 
 import (
+	"math/rand"
+
 	"gbl-api/data"
 	"gorm.io/gorm"
-	"math/rand"
 )
 
 func GetBooths() ([]Booth, error) {
@@ -73,7 +74,7 @@ func AddUidToBooth(bid string, uid string) error {
 		return err
 	}
 	booth.UIDs = append(booth.UIDs, uid)
-	return db.Save(&booth).Error
+	return db.Where("bid = ?", bid).Save(&booth).Error
 }
 
 func IsUidInBooth(bid string, uid string) (bool, error) {
