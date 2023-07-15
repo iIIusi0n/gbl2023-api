@@ -33,6 +33,8 @@ func CreateRouter() *gin.Engine {
 			booth.POST("/make/", makeBooth)
 
 			booth.POST("/adduser/", addUser)
+
+			booth.PATCH("/complexity/", setComplexity)
 		}
 
 		problem := api.Group("/problem")

@@ -77,6 +77,17 @@ func AddUidToBooth(bid string, uid string) error {
 	return db.Where("bid = ?", bid).Save(&booth).Error
 }
 
+func SetComplexity(bid string, complexity int) error {
+	db := data.GetDatabase()
+	var booth Booth
+	err := db.Where("bid = ?", bid).First(&booth).Error
+	if err != nil {
+		return err
+	}
+	booth.Complexity = complexity
+	return db.Where("bid = ?", bid).Save(&booth).Error
+}
+
 func IsUidInBooth(bid string, uid string) (bool, error) {
 	db := data.GetDatabase()
 	var booth Booth

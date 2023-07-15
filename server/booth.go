@@ -179,3 +179,32 @@ func addUser(c *gin.Context) {
 		"status": "ok",
 	})
 }
+
+func setComplexity(c *gin.Context) {
+	type Request struct {
+		BID        string `json:"bid"`
+		Complexity int    `json:"complexity"`
+	}
+
+	var req Request
+	err := c.BindJSON(&req)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": "Invalid request",
+		})
+		return
+	}
+
+	err = booth.SetComplexity(req.BID, req.Complexity)
+	if err != nil {
+		log.Println(err)
+		c.JSON(500, gin.H{
+			"message": "Internal server error",
+		})
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"status": "ok",
+	})
+}
